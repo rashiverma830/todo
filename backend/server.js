@@ -14,10 +14,16 @@ app.use(express.json());
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
-const todoRoutes = require('./routes/todoRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/todos', todoRoutes);
+app.use('/api/tasks', taskRoutes);
+
+// Centralized Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: err.message || 'Internal Server Error' });
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
